@@ -1,4 +1,6 @@
 #pragma once
+#include "sound/SoundSource.h"
+
 class BackGround;
 class Player;
 class GameCamera;
@@ -13,5 +15,6 @@ public:
 	BackGround* backGround;
 	Player* player;
 	GameCamera* gameCamera;
+	SoundSource* bgm;
 };
 

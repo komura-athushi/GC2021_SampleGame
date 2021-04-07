@@ -12,6 +12,6 @@ public:
 	Vector3 targetPosition;
 	Vector3 moveSpeed;
 	float degreeY = 0.0f;
-	float degreeXZ = 0.0f;
+	float degreeXZ = 50.0f;
 };
 

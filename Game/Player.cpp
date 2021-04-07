@@ -134,7 +134,6 @@ void Player::State()
 			playerState = 0;
 		}
 	}
-
 }
 
 void Player::Render(RenderContext& rc)

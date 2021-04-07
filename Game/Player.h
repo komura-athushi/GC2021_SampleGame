@@ -25,4 +25,5 @@ public:
 	};
 	AnimationClip animationClips[enAnimationClip_Num];
 	int playerState = 0;
+	int getStarNumber = 0;
 };

@@ -4,6 +4,8 @@
 #include "BackGround.h"
 #include "GameCamera.h"
 #include "Star.h"
+#include "sound/SoundEngine.h"
+#include "GameClear.h"
 
 Game::Game()
 {
@@ -30,14 +32,26 @@ Game::Game()
 	Star* star5 = NewGO<Star>(0, "star");
 	star5->firstPosition = { 2700.0f,450.0f,400.0f };
 	star5->position = { 2700.0f,450.0f,400.0f };
+
+	g_soundEngine->ResistWaveFileBank(1, "Assets/sound/gamebgm.wav");
+	bgm = NewGO<SoundSource>(0);
+	bgm->Init(1);
+	bgm->Play(true);
 }
 
 Game::~Game()
 {
-
+	DeleteGO(player);
+	DeleteGO(gameCamera);
+	DeleteGO(bgm);
+	DeleteGO(backGround);
 }
 
 void Game::Update()
 {
-
+	if (player->getStarNumber == 5)
+	{
+		DeleteGO(this);
+		NewGO<GameClear>(0, "gamecleear");
+	}
 }

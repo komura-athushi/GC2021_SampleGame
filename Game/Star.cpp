@@ -1,11 +1,15 @@
 #include "stdafx.h"
 #include "Star.h"
 #include "Player.h"
+#include "sound/SoundEngine.h"
+#include "sound/SoundSource.h"
 
 Star::Star()
 {
 	modelRender.Init("Assets/modelData/star.tkm");
 	player = FindGO<Player>("player");
+
+	g_soundEngine->ResistWaveFileBank(2, "Assets/sound/get.wav");
 }
 
 Star::~Star()
@@ -21,7 +25,12 @@ void Star::Update()
 	Vector3 diff = player->position - position;
 	if (diff.Length() <= 100.0f)
 	{
+		player->getStarNumber += 1;
 		DeleteGO(this);
+		SoundSource* se = NewGO<SoundSource>(0);
+		se->Init(2);
+		se->SetVolume(3.5f);
+		se->Play(false);
 	}
 
 	modelRender.Update();

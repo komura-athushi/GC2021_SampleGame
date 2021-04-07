@@ -32,6 +32,10 @@ void GameCamera::Update()
 	{
 		degreeXZ = 70.0f;
 	}
+	else if (degreeXZ <= 20.0f)
+	{
+		degreeXZ = 20.0f;
+	}
 
 	//YŽ²‚Ì‰ñ“]‚ðŒvŽZB
 	Quaternion rotationY;
