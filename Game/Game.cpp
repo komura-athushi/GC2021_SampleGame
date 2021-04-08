@@ -20,23 +20,23 @@ Game::Game()
 	Star* star1 = NewGO<Star>(0, "star");
 	//座標を設定する。
 	star1->firstPosition = { 100.0f,150.0f,-200.0f };
-	star1->position = { 100.0f,150.0f,-200.0f };
+	star1->position = star1->firstPosition;
 
 	Star* star2 = NewGO<Star>(0, "star");
 	star2->firstPosition = { 1000.0f,150.0f,-200.0f };
-	star2->position = { 1000.0f,150.0f,-200.0f };
+	star2->position = star2->firstPosition;
 
 	Star* star3 = NewGO<Star>(0, "star");
 	star3->firstPosition = { 100.0f,250.0f,400.0f };
-	star3->position = { 100.0f,250.0f,400.0f };
+	star3->position = star3->firstPosition;
 
 	Star* star4 = NewGO<Star>(0, "star");
 	star4->firstPosition = { 2300.0f,50.0f,-200.0f };
-	star4->position = { 2300.0f,50.0f,-200.0f };
+	star4->position = star4->firstPosition;
 
 	Star* star5 = NewGO<Star>(0, "star");
 	star5->firstPosition = { 2700.0f,450.0f,400.0f };
-	star5->position = { 2700.0f,450.0f,400.0f };
+	star5->position = star5->firstPosition;
 
 	//ゲーム中のBGMを読み込む。
 	g_soundEngine->ResistWaveFileBank(1, "Assets/sound/gamebgm.wav");
