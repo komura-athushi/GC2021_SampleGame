@@ -4,55 +4,68 @@
 
 GameCamera::GameCamera()
 {
-	player = FindGO<Player>("player");
 }
+
 
 GameCamera::~GameCamera()
 {
-
 }
+bool GameCamera::Start()
+{
+	//注視点から視点までのベクトルを設定。
+	m_toCameraPos.Set(0.0f, 125.0f, 250.0f);
+	//プレイヤーのインスタンスを探す。
+	m_player = FindGO<Player>("player");
 
+	//カメラのニアクリップとファークリップを設定する。
+	g_camera3D->SetNear(1.0f);
+	g_camera3D->SetFar(10000.0f);
+
+	return true;
+}
 void GameCamera::Update()
 {
-	//プレイヤーの座標を取得
-	Vector3 playerPosition = player->position;
+	//カメラを更新。
+	//注視点を計算する。
+	Vector3 target = m_player->position;
+	//プレイヤの足元からちょっと上を注視点とする。
+	target.y += 80.0f;
 
-	targetPosition = playerPosition;
-	targetPosition.y += 50.0f;
-
-	//右スティックの入力量を取得
-	Vector3 stickR;
-	stickR.x = g_pad[0]->GetRStickXF();
-	stickR.y = g_pad[0]->GetRStickYF();
-
-	degreeY += stickR.x;
-	degreeXZ -= stickR.y;
-
-	if (degreeXZ >= 70.0f)
-	{
-		degreeXZ = 70.0f;
+	Vector3 toCameraPosOld = m_toCameraPos;
+	//パッドの入力を使ってカメラを回す。
+	float x = g_pad[0]->GetRStickXF();
+	float y = g_pad[0]->GetRStickYF();
+	//Y軸周りの回転
+	Quaternion qRot;
+	qRot.SetRotationDeg(Vector3::AxisY, 1.3f * x);
+	qRot.Apply(m_toCameraPos);
+	//X軸周りの回転。
+	Vector3 axisX;
+	axisX.Cross(Vector3::AxisY, m_toCameraPos);
+	axisX.Normalize();
+	qRot.SetRotationDeg(axisX, 1.3f * y);
+	qRot.Apply(m_toCameraPos);
+	//カメラの回転の上限をチェックする。
+	//注視点から視点までのベクトルを正規化する。
+	//正規化すると、ベクトルの大きさが１になる。
+	//大きさが１になるということは、ベクトルから強さがなくなり、方向のみの情報となるということ。
+	Vector3 toPosDir = m_toCameraPos;
+	toPosDir.Normalize();
+	if (toPosDir.y < -0.2f) {
+		//カメラが上向きすぎ。
+		m_toCameraPos = toCameraPosOld;
 	}
-	else if (degreeXZ <= 20.0f)
-	{
-		degreeXZ = 20.0f;
+	else if (toPosDir.y > 0.9f) {
+		//カメラが下向きすぎ。
+		m_toCameraPos = toCameraPosOld;
 	}
 
-	//Y軸の回転を計算。
-	Quaternion rotationY;
-	rotationY.SetRotationDegY(degreeY);
-	Vector3 toPos = Vector3::AxisZ;
-	rotationY.Apply(toPos);
-	//XZ軸の回転を計算。
-	Vector3 rotAxis;
-	rotAxis.Cross(toPos, Vector3::AxisY);
-	//ベクトルを正規化する。
-	rotAxis.Normalize();
-	Quaternion rotationXZ;
-	rotationXZ.SetRotationDeg(rotAxis, degreeXZ);
-	rotationXZ.Apply(toPos);
+	//視点を計算する。
+	Vector3 pos = target + m_toCameraPos;
+	//メインカメラに注視点と視点を設定する。
+	g_camera3D->SetTarget(target);
+	g_camera3D->SetPosition(pos);
 
-	position = playerPosition + toPos * 350.0f;
-
-	g_camera3D->SetTarget(targetPosition);
-	g_camera3D->SetPosition(position);
+	//カメラの更新。
+	g_camera3D->Update();
 }

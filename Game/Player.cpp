@@ -11,6 +11,8 @@ Player::Player()
 	animationClips[enAnimationClip_Jump].SetLoopFlag(false);
 	//モデルを初期化する。
 	modelRender.Init("Assets/modelData/unityChan.tkm", animationClips, enAnimationClip_Num, enModelUpAxisY);
+
+	//キャラコンを初期化する。
 	characterController.Init(25.0f, 75.0f, position);
 }
 
@@ -19,6 +21,7 @@ Player::~Player()
 
 }
 
+//更新処理。
 void Player::Update()
 {
 	//移動処理。
@@ -28,14 +31,16 @@ void Player::Update()
 	//アニメーション。
 	Animation();
 	//ステートを決める。
-	State();
+	ManageState();
 
 	//絵描きさんの更新処理。
 	modelRender.Update();
 }
 
+//移動処理。
 void Player::Move()
 {
+	//xzの移動速度を0.0fにする。
 	moveSpeed.x = 0.0f;
 	moveSpeed.z = 0.0f;
 
@@ -79,63 +84,70 @@ void Player::Move()
 	modelRender.SetPosition(position);
 }
 
+//回転処理。
 void Player::Rotation()
 {
 	//xかzの移動速度があったら(スティックの入力があったら)。
 	if (fabsf(moveSpeed.x) >= 0.001f || fabsf(moveSpeed.z) >= 0.001f)
 	{
 		//キャラクターの方向を変える。
-		rotation.SetRotationY(atan2f(moveSpeed.x, moveSpeed.z));
+		rotation.SetRotationYFromDirectionXZ(moveSpeed);
+		//絵描きさんに回転を教える。
 		modelRender.SetRotation(rotation);
 	}
+
 }
 
+//アニメーション処理。
 void Player::Animation()
 {
+	//switch文。
+	switch (playerState) {
 	//プレイヤーステートが0(待機)だったら。
-	if (playerState == 0)
-	{
+	case 0:
 		//待機アニメーションを再生する。
 		modelRender.PlayAnimation(enAnimationClip_Idle);
-	}
+		break;
 	//プレイヤーステートが1(ジャンプ中)だったら。
-	else if (playerState == 1)
-	{
+	case 1:
 		//ジャンプアニメーションを再生する。
 		modelRender.PlayAnimation(enAnimationClip_Jump);
-	}
+		break;
 	//プレイヤーステートが2(歩き)だったら。
-	else if (playerState == 2)
-	{
+	case 2:
 		//歩きアニメーションを再生する。
 		modelRender.PlayAnimation(enAnimationClip_Walk);
+		break;
 	}
 }
 
-void Player::State()
+//ステート管理。
+void Player::ManageState()
 {
 	//地面に付いていなかったら。
 	if (characterController.IsOnGround() == false)
 	{
 		//ステートを1(ジャンプ中)にする。
 		playerState = 1;
+		//ここでManageStateの処理を終わらせる。
+		return;
 	}
+
 	//地面に付いていたら。
+	//xかzの移動速度があったら(スティックの入力があったら)。
+	if (fabsf(moveSpeed.x) >= 0.001f || fabsf(moveSpeed.z) >= 0.001f)
+	{
+		//ステートを2(歩き)にする。
+		playerState = 2;
+	}
+	//xとzの移動速度が無かったら(スティックの入力が無かったら)。
 	else {
-		//xかzの移動速度があったら(スティックの入力があったら)。
-		if (fabsf(moveSpeed.x) >= 0.001f || fabsf(moveSpeed.z) >= 0.001f)
-		{
-			//ステートを2(歩き)にする。
-			playerState = 2;
-		}
-		//xとzの移動速度が無かったら(スティックの入力が無かったら)。
-		else {
-			//ステートを0(待機)にする。
-			playerState = 0;
-		}
+		//ステートを0(待機)にする。
+		playerState = 0;
 	}
 }
 
+//描画処理。
 void Player::Render(RenderContext& rc)
 {
 	modelRender.Draw(rc);

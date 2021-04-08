@@ -1,29 +1,38 @@
 #pragma once
 
+//プレイヤークラス。
 class Player : public IGameObject
 {
 public:
 	Player();
 	~Player();
-	void Update();
-	void Render(RenderContext& rc);
-	void Move();
-	void Rotation();
-	void Animation();
-	void State();
 
-	ModelRender modelRender;
-	Vector3 position;
-	Vector3 moveSpeed;
-	CharacterController characterController;
-	Quaternion rotation;
-	enum EnAnimationClip {
+	//更新処理。
+	void Update();
+	//描画処理。
+	void Render(RenderContext& rc);
+	//移動処理。
+	void Move();
+	//回転処理。
+	void Rotation();
+	//アニメーション処理。
+	void Animation();
+	//ステート管理。
+	void ManageState();
+
+	//メンバ変数。
+	ModelRender modelRender;	//モデルレンダ―。
+	Vector3 position;			//座標。
+	Vector3 moveSpeed;			//移動処理。
+	CharacterController characterController;		//キャラコン。
+	Quaternion rotation;			//回転処理。
+	enum EnAnimationClip {		//アニメーション。
 		enAnimationClip_Idle,
 		enAnimationClip_Walk,
 		enAnimationClip_Jump,
 		enAnimationClip_Num,
 	};
-	AnimationClip animationClips[enAnimationClip_Num];
-	int playerState = 0;
-	int getStarNumber = 0;
+	AnimationClip animationClips[enAnimationClip_Num];		//アニメーションクリップ。
+	int playerState = 0;		//プレイヤーステート(プレイヤーの状態)	。
+	int starCount = 0;			//獲得した☆の数。
 };
