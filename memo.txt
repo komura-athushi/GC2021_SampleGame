@@ -1,0 +1,57 @@
+授業でやること。
+　Starクラスの作成から全部。
+　BackGroundの作成から全部。
+　GameClearクラスの作成から実装。
+　Titleクラスの実装。
+　Playerクラスの実装。
+　
+こちら側で用意すること。
+　GameCamera.h.cpp
+　Titleクラス(空)
+　Gameクラス(カメラとプレイヤーの生成だけしてる)
+　Player(アニメーションとモデル読み込み座標)
+
+タスク
+　Titleクラスの実装
+　　画像の表示
+　　Aボタン押したらGameクラスを作成
+
+  BackGroundクラスの実装
+　　BackGround.h.cppを作る
+　　モデルの表示
+    Gameでオブジェクトの作成
+　　あたり判定
+
+　Playerクラスの実装
+　　移動処理
+　　回転処理
+　　ステート管理
+　　アニメーション処理
+
+　Starクラスの実装
+　　Star.h.cppを作る
+　　モデルの表示
+    Gameでオブジェクトの作成
+　　Gameで複数のオブジェクトを作る。
+　　回転
+　　移動(firstPosition追加して、Gameのコードを追加)
+    プレイヤーが近づいたら消える
+　　プレイヤーにカウントを追加してカウントを+する
+　　
+  GameClearの実装
+　　GameClear.h.cppを作る
+　　画像の表示
+　　Gameで☆カウントが5になったらGameを削除してGameClearを作成
+    Aボタンを押したらGameClearを削除してTitleを作成
+　　Gameでプレイヤーやカメラなどの削除を行う
+
+  音の再生
+　　TitleのBGM
+　　GameのBGM
+    ☆のBGM
+    BGMの削除
+
+　　　
+　　
+　　
+　　

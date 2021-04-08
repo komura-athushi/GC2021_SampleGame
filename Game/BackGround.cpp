@@ -9,6 +9,7 @@ BackGround::BackGround()
 	modelRender.Update();
 	//Collider(‚ ‚½‚è”»’è)‚ðì‚éB
 	physicsStaticObject.CreateFromModel(modelRender.GetModel(), modelRender.GetModel().GetWorldMatrix());
+	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 }
 
 BackGround::~BackGround()
