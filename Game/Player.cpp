@@ -29,7 +29,7 @@ void Player::Update()
 	//回転処理。
 	Rotation();
 	//アニメーション。
-	Animation();
+	PlayAnimation();
 	//ステートを決める。
 	ManageState();
 
