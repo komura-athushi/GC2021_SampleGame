@@ -99,7 +99,7 @@ void Player::Rotation()
 }
 
 //アニメーション処理。
-void Player::Animation()
+void Player::PlayAnimation()
 {
 	//switch文。
 	switch (playerState) {

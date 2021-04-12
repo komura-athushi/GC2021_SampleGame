@@ -16,7 +16,7 @@ public:
 	//回転処理。
 	void Rotation();
 	//アニメーション処理。
-	void Animation();
+	void PlayAnimation();
 	//ステート管理。
 	void ManageState();
 
