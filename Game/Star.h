@@ -8,12 +8,12 @@ public:
 	~Star();
 	//更新処理。
 	void Update();
+	//描画処理。
+	void Render(RenderContext& rc);
 	//移動処理。
 	void Move();
 	//回転処理。
 	void Rotation();
-	//描画処理。
-	void Render(RenderContext& rc);
 
 	//メンバ変数。
 	ModelRender modelRender;	//モデルレンダ―。
